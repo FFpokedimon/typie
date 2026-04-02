@@ -1,0 +1,70 @@
+@import url("https://fonts.googleapis.com/css2?family=ABeeZee&family=Montserrat&family=Slackey&family=Press+Start+2P&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close");
+@import "tailwindcss";
+
+@theme {
+    --font-montserrat: "Montserrat", sans-serif;
+    --font-press-start: "Press Start 2P", sans-serif;
+}
+
+@theme {
+    --color-evergreen-50: oklch(96.64% 0.015 151.77);
+    --color-evergreen-100: oklch(93.39% 0.028 151.91);
+    --color-evergreen-200: oklch(86.79% 0.058 150.43);
+    --color-evergreen-300: oklch(80.46% 0.090 150.28);
+    --color-evergreen-400: oklch(74.11% 0.118 149.39);
+    --color-evergreen-500: oklch(67.96% 0.146 147.90);
+    --color-evergreen-600: oklch(57.82% 0.121 148.23);
+    --color-evergreen-700: oklch(47.20% 0.097 148.29);
+    --color-evergreen-800: oklch(35.69% 0.069 148.12);
+    --color-evergreen-900: oklch(23.46% 0.038 149.47);
+    --color-evergreen-950: oklch(19.66% 0.030 149.85);
+
+    --color-bright-lemon-50: oklch(98.63% 0.027 104.67);
+    --color-bright-lemon-100: oklch(97.53% 0.054 106.24);
+    --color-bright-lemon-200: oklch(95.10% 0.104 106.44);
+    --color-bright-lemon-300: oklch(93.17% 0.148 106.86);
+    --color-bright-lemon-400: oklch(91.40% 0.177 107.35);
+    --color-bright-lemon-500: oklch(89.85% 0.191 107.41);
+    --color-bright-lemon-600: oklch(75.99% 0.161 107.26);
+    --color-bright-lemon-700: oklch(61.48% 0.129 107.01);
+    --color-bright-lemon-800: oklch(45.94% 0.095 107.31);
+    --color-bright-lemon-900: oklch(29.31% 0.059 108.16);
+    --color-bright-lemon-950: oklch(23.74% 0.046 107.60);
+
+    --color-yellow-green-50: oklch(97.58% 0.021 127.38);
+    --color-yellow-green-100: oklch(95.05% 0.040 125.52);
+    --color-yellow-green-200: oklch(90.38% 0.083 126.38);
+    --color-yellow-green-300: oklch(85.66% 0.122 127.20);
+    --color-yellow-green-400: oklch(81.08% 0.157 128.29);
+    --color-yellow-green-500: oklch(76.69% 0.184 129.79);
+    --color-yellow-green-600: oklch(65.10% 0.154 129.70);
+    --color-yellow-green-700: oklch(52.97% 0.124 129.56);
+    --color-yellow-green-800: oklch(40.09% 0.091 129.32);
+    --color-yellow-green-900: oklch(25.77% 0.051 128.36);
+    --color-yellow-green-950: oklch(21.22% 0.039 126.62);
+
+    --color-medium-jungle-50: oklch(96.66% 0.016 142.56);
+    --color-medium-jungle-100: oklch(93.43% 0.031 142.34);
+    --color-medium-jungle-200: oklch(87.08% 0.066 141.62);
+    --color-medium-jungle-300: oklch(80.61% 0.098 141.64);
+    --color-medium-jungle-400: oklch(74.49% 0.132 141.33);
+    --color-medium-jungle-500: oklch(68.32% 0.161 141.52);
+    --color-medium-jungle-600: oklch(58.20% 0.135 141.25);
+    --color-medium-jungle-700: oklch(47.31% 0.106 141.39);
+    --color-medium-jungle-800: oklch(36.04% 0.077 141.27);
+    --color-medium-jungle-900: oklch(23.50% 0.042 141.79);
+    --color-medium-jungle-950: oklch(19.72% 0.032 140.93);
+
+    --color-sea-green-50: oklch(96.49% 0.014 145.47);
+    --color-sea-green-100: oklch(93.18% 0.029 145.34);
+    --color-sea-green-200: oklch(86.25% 0.055 145.08);
+    --color-sea-green-300: oklch(79.46% 0.086 144.72);
+    --color-sea-green-400: oklch(72.76% 0.116 144.27);
+    --color-sea-green-500: oklch(66.05% 0.141 143.78);
+    --color-sea-green-600: oklch(56.30% 0.119 143.79);
+    --color-sea-green-700: oklch(45.90% 0.094 143.86);
+    --color-sea-green-800: oklch(34.87% 0.066 143.99);
+    --color-sea-green-900: oklch(23.13% 0.039 144.17);
+    --color-sea-green-950: oklch(19.34% 0.029 144.34);
+}

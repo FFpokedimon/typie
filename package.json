@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "@tailwindcss/cli": "^4.2.2",
+    "tailwindcss": "^4.2.2"
+  },
+  "name": "typie",
+  "version": "1.0.0",
+  "description": "Клавиатурный тренажер для младшеклассников, только приучающихся к компьютеру",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx @tailwindcss/cli -i style.css -o output.css --watch --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FFpokedimon/typie.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/FFpokedimon/typie/issues"
+  },
+  "homepage": "https://github.com/FFpokedimon/typie#readme"
+}
