@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="output.css">
+    <title>Таблица лидеров</title>
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/background.jpg');           
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="relative flex flex-col min-h-screen px-4 pb-6 font-montserrat">
+    <nav class="sticky bg-medium-jungle-900/80 text-gray-300 rounded-b-2xl px-6 py-4 mb-6 flex justify-between items-center backdrop-blur-xs">
+        <div class="flex items-center space-x-7 text-lg">
+            <a href="index.html" class="flex items-center gap-2 text-2xl font-press-start text-bright-lemon-300">Тайпи</a>
+            <a href="#" class="hover:text-white transition-colors duration-100">Таблица лидеров</a>
+            <a href="#" class="hover:text-white transition-colors duration-100">Друзья</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button class="bg-bright-lemon-400 hover:bg-bright-lemon-600 text-black font-bold py-2 px-6 rounded-full font-montserrat transition-colors duration-200">
+                Вход
+            </button>
+            <button class="bg-bright-lemon-400 hover:bg-bright-lemon-600 text-black font-bold py-2 px-6 rounded-full font-montserrat transition-colors duration-200">
+                Регистрация
+            </button>
+        </div>
+    </nav>
+    <div class="bg-medium-jungle-900/80 text-white grow rounded-2xl p-6 backdrop-blur-xs">
+        <h1 class="text-3xl font-bold text-center text-bright-lemon-300 font-press-start mb-6">
+            Таблица лидеров
+        </h1>
+        <div x-data="{
+                    leaders: [
+                        { name: 'Алексей М.', grade: '5-7', score: 12500, rank: 1 },
+                        { name: 'Мария К.', grade: '8-11', score: 11200, rank: 2 },
+                        { name: 'Дмитрий С.', grade: '3', score: 9800, rank: 3 },
+                        { name: 'Анна П.', grade: '2', score: 8700, rank: 4 },
+                        { name: 'Иван Т.', grade: '1', score: 7500, rank: 5 },
+                        { name: 'Елена В.', grade: '4', score: 6300, rank: 6 },
+                        { name: 'Сергей Л.', grade: '8-11', score: 5100, rank: 7 },
+                        { name: 'Ольга Н.', grade: 'Дошкольник', score: 3900, rank: 8 },
+                    ],
+                    searchName: '',
+                    filterGrade: '',
+                    sortKey: 'score',
+                    sortAsc: false,
+                    gradeOrder: ['Дошкольник', '1', '2', '3', '4', '5-7', '8-11'],
+                    sortBy(key) {
+                        if (this.sortKey === key) {
+                            this.sortAsc = !this.sortAsc;
+                        } else {
+                            this.sortKey = key;
+                            this.sortAsc = key === 'name' || key === 'grade';
+                        }
+                        const dir = this.sortAsc ? 1 : -1;
+                        this.leaders.sort((a, b) => {
+                            let valA = a[key], valB = b[key];
+                            if (key === 'grade') {
+                                valA = this.gradeOrder.indexOf(valA);
+                                valB = this.gradeOrder.indexOf(valB);
+                                return (valA - valB) * dir;
+                            }
+                            if (typeof valA === 'string') {
+                                return valA.localeCompare(valB, 'ru') * dir;
+                            }
+                            return (valA - valB) * dir;
+                        });
+                    },
+                    getArrow(key) {
+                        if (this.sortKey !== key) return 'mobiledata_arrows';
+                        return this.sortAsc ? 'arrow_downward' : 'arrow_upward';
+                    },
+                    getRankBadge(rank) {
+                        if (rank === 1) return '🥇';
+                        if (rank === 2) return '🥈';
+                        if (rank === 3) return '🥉';
+                        return rank;
+                    },
+                    getRowClass(rank) {
+                        if (rank === 1) return 'bg-yellow-500/10';
+                        if (rank === 2) return 'bg-gray-400/10';
+                        if (rank === 3) return 'bg-amber-700/10';
+                        return '';
+                    },
+                    getRankColorClass(rank) {
+                        if (rank === 1) return 'text-yellow-400';
+                        if (rank === 2) return 'text-gray-400';
+                        if (rank === 3) return 'text-amber-600';
+                        return 'text-gray-300';
+                    },
+                    get filteredAndSortedLeaders() {
+                        let filtered = this.leaders.filter(player => {
+                            const matchName = player.name.toLowerCase().includes(this.searchName.toLowerCase());
+                            const matchGrade = this.filterGrade === '' || this.filterGrade === 'Все' || player.grade === this.filterGrade;
+                            return matchName && matchGrade;
+                        });
+                        const sorted = filtered.sort((a, b) => {
+                            let valA = a[this.sortKey], valB = b[this.sortKey];
+                            const dir = this.sortAsc ? 1 : -1;
+                            if (this.sortKey === 'grade') {
+                                valA = this.gradeOrder.indexOf(valA);
+                                valB = this.gradeOrder.indexOf(valB);
+                                return (valA - valB) * dir;
+                            }
+                            if (typeof valA === 'string') {
+                                return valA.localeCompare(valB, 'ru') * dir;
+                            }
+                            return (valA - valB) * dir;
+                        });
+                        return sorted;
+                    }
+                }">
+            <div class="flex flex-wrap items-end mb-4 gap-5">
+                <div class="flex flex-col gap-3">
+                    <label for="searchName" class="text-sm text-gray-300 mb-1">Поиск по имени</label>
+                    <input
+                        type="text"
+                        id="searchName"
+                        x-model="searchName"
+                        placeholder="Введите имя..."
+                        class="border border-white p-3 rounded-full text-white placeholder-gray-400"
+                    />
+                </div>
+                <div class="flex flex-col gap-3">
+                    <label class="text-sm text-gray-300 mb-1">Класс</label>
+                    <div x-data="{ selected: 'Все', options: ['Все', 'Дошкольник', '1', '2', '3', '4', '5-7', '8-11'], isOpen: false }"
+                         class="relative">
+                        <button @click="isOpen = !isOpen"
+                                type="button"
+                                class="px-4 py-3 border border-white rounded-full text-left text-white min-w-40">
+                            <span x-text="selected"></span>
+                        </button>
+                        <ul x-show="isOpen"
+                            @click.outside="isOpen = false"
+                            x-transition:enter="transition ease-out duration-100"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-75"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute z-50 mt-1 w-full bg-medium-jungle-900 rounded-2xl overflow-hidden min-w-32">
+                            <template x-for="option in options" :key="option">
+                                <li @click="selected = option; filterGrade = option === 'Все' ? '' : option; isOpen = false"
+                                    class="px-4 py-2 hover:bg-medium-jungle-800 cursor-pointer text-white"
+                                    x-text="option"></li>
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="overflow-y-auto rounded-xl max-h-[calc(100vh-280px)] bg-medium-jungle-900/50 mt-4">
+            <template x-if="filteredAndSortedLeaders.length === 0">
+                <div class="text-center py-8 text-gray-400 text-lg">
+                    Результаты отсутствуют
+                </div>
+            </template>
+            <table class="min-w-full table-auto border-collapse" x-show="filteredAndSortedLeaders.length > 0">
+                <thead class="sticky top-0 bg-medium-jungle-900/80 backdrop-blur-xs z-10">
+                    <tr class="border-b border-white/20">
+                        <th class="py-3 px-4 text-left text-gray-300 font-semibold uppercase tracking-wider w-16">#</th>
+                        <th class="py-3 px-4 text-left text-gray-300 font-semibold uppercase tracking-wider cursor-pointer hover:text-white transition-colors select-none"
+                            @click="sortBy('name')">
+                            <div class="flex items-center">
+                            Имя <span class="ml-1 text-bright-lemon-400 material-symbols-rounded" x-text="getArrow('name')"></span>
+                            </div>
+                        </th>
+                        <th class="py-3 px-4 text-center text-gray-300 font-semibold uppercase tracking-wider w-24 cursor-pointer hover:text-white transition-colors select-none whitespace-nowrap"
+                            @click="sortBy('grade')">
+                            <div class="flex items-center">
+                            Класс <span class="ml-1 text-bright-lemon-400 material-symbols-rounded" x-text="getArrow('grade')"></span>
+                            </div>
+                        </th>
+                        <th class="py-3 px-4 text-right text-gray-300 font-semibold uppercase tracking-wider w-32 cursor-pointer hover:text-white transition-colors select-none"
+                            @click="sortBy('score')">
+                            <div class="flex items-center">
+                            Очки <span class="ml-1 text-bright-lemon-400 material-symbols-rounded" x-text="getArrow('score')"></span>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="(player, index) in filteredAndSortedLeaders" :key="player.rank">
+                        <tr class="border-b border-white/10 hover:bg-white/5 transition-colors duration-150"
+                            :class="getRowClass(player.rank)">
+                            <td class="py-3 px-4 font-bold"
+                                :class="getRankColorClass(player.rank)">
+                                <span x-text="getRankBadge(player.rank)"></span>
+                            </td>
+                            <td class="py-3 px-4 text-white font-medium" x-text="player.name"></td>
+                            <td class="py-3 px-4 text-center text-gray-300" x-text="player.grade"></td>
+                            <td class="py-3 px-4 text-right text-bright-lemon-300 font-semibold" x-text="player.score.toLocaleString()"></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

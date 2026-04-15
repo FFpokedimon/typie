@@ -15,12 +15,13 @@
 </head>
 <body class="relative flex flex-col min-h-screen font-montserrat"
       x-data="{showModal: false, formType: 'register'}">
-    <nav class="navbar bg-medium-jungle-900/80 text-gray-200 rounded-b-2xl px-6 py-4 mx-4 flex justify-between items-center backdrop-blur-xs">
-        <div class="flex space-x-6">
-            <a href="#"><span class="text-lg">Таблица лидеров</span></a>
-            <a href="#"><span class="text-lg">Друзья</span></a>
+    <nav class="sticky bg-medium-jungle-900/80 text-gray-300 rounded-b-2xl px-6 py-4 mx-4 flex justify-between items-center backdrop-blur-xs">
+        <div class="flex items-center space-x-7 text-lg">
+            <a href="#" class="text-2xl font-press-start text-bright-lemon-300">Тайпи</a>
+            <a href="leaderboard.html" class="hover:text-white transition-colors duration-100">Таблица лидеров</a>
+            <a href="#" class="hover:text-white transition-colors duration-100">Друзья</a>
         </div>
-        <div class="flex space-x-4">
+        <div class="flex items-center space-x-4">
             <button class="bg-bright-lemon-400 hover:bg-bright-lemon-600 text-gray-900 font-bold py-2 px-6 rounded-full font-montserrat transition-colors duration-200"
                     @click="formType = 'login'; showModal = true">
                 Вход

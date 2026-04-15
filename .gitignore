@@ -1,2 +1,7 @@
 /.idea
+/.vscode
 /node_modules
+/typie-main
+/package-lock.json
+/test.html
+/typie.code-workspace
