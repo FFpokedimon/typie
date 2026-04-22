@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обезьянки-Типографы: Обучение</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="game-logic.js"></script>
+    <link rel="stylesheet" href="output.css">
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/background.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .monkey-exit {
+            animation: exit-anim 0.5s forwards ease-out;
+        }
+
+        @keyframes exit-anim {
+            to {
+                transform: scale(0) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body x-data="gameHandler()" @keydown.window="handleInput($event)"
+    class="flex flex-col min-h-screen m-0 font-montserrat text-white overflow-hidden">
+    <nav
+        class="sticky bg-medium-jungle-900/80 text-gray-300 rounded-b-2xl px-6 py-4 mx-4 flex justify-between items-center backdrop-blur-xs">
+        <div class="flex items-center space-x-7 text-lg">
+            <a href="index.html" class="text-2xl font-press-start text-bright-lemon-300">Тайпи</a>
+            <a href="leaderboard.html" class="hover:text-white transition-colors duration-100">Таблица лидеров</a>
+            <a href="#" class="hover:text-white transition-colors duration-100">Друзья</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button
+                class="bg-bright-lemon-400 hover:bg-bright-lemon-600 text-gray-900 font-bold py-2 px-6 rounded-full font-montserrat transition-colors duration-200"
+                @click="formType = 'login'; showModal = true">
+                Вход
+            </button>
+            <button
+                class="bg-bright-lemon-400 hover:bg-bright-lemon-600 text-gray-900 font-bold py-2 px-6 rounded-full font-montserrat transition-colors duration-200"
+                @click="formType = 'register'; showModal = true">
+                Регистрация
+            </button>
+        </div>
+    </nav>
+
+    <div class="grow flex flex-col items-center justify-center p-5 gap-5" x-init="init()">
+        <!-- Round Selector -->
+        <div
+            class="flex items-center justify-between w-1/2 max-w-300 mx-auto px-5 py-3 bg-black/60 rounded-3xl border border-[#d4e157]/30 text-[0.9rem] font-press-start">
+            <span class="text-bright-lemon-300">ПЕСОЧНИЦА</span>
+            <div class="flex flex-row gap-2">
+                <button
+                    class="bg-[#d4e157] text-[#1a2e1a] w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-200 hover:scale-110"
+                    @click="showSettings = true; isPaused = true;">
+                    <span class="material-symbols-rounded">replay</span>
+                </button>
+                <button
+                    class="bg-[#d4e157] text-[#1a2e1a] w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-200 hover:scale-110"
+                    @click="showSettings = true; isPaused = true;">
+                    <span class="material-symbols-rounded">settings</span>
+                </button>
+            </div>
+        </div>
+        <div class="w-[95vw] max-w-300 h-[70vh] bg-[#172517]/60 border-4 border-[#d4e157] rounded-[40px] relative overflow-hidden backdrop-blur-md shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
+            id="game-field">
+
+            <!-- HUD -->
+            <div class="absolute top-5 left-5 right-5 flex justify-between items-center z-50"
+                x-show="!isStartScreen && !gameOver && !isPaused && !showSettings">
+                <div
+                    class="bg-black/60 px-5 py-2.5 rounded-xl border border-[#d4e157]/30 font-press-start text-[0.8rem]">
+                    ВРЕМЯ: <span x-text="timer" :class="timer < 10 ? 'text-red-500' : 'text-bright-lemon-300'"></span>
+                </div>
+                <div class="flex gap-4">
+                    <button
+                        class="bg-[#ff9800] text-white px-4 py-2 rounded-xl font-press-start text-[0.6rem] border-none cursor-pointer transition-transform duration-200 hover:scale-110"
+                        @click="togglePause()">ПАУЗА (ПРОБЕЛ)</button>
+
+                </div>
+            </div>
+
+            <!-- Start Screen -->
+            <div class="absolute inset-0 bg-black/85 flex flex-col items-center justify-center z-200 text-center p-10"
+                x-show="isStartScreen && !showSettings" x-cloak>
+                <h1 class="text-4xl text-bright-lemon-300 font-press-start mb-6">ОБЕЗЬЯНКИ-ТИПОГРАФЫ</h1>
+                <p class="text-lg mb-10 max-w-xl">Помоги обезьянкам собрать все буквы! Нажимай на клавиатуре те буквы,
+                    которые они несут. Медленно и аккуратно!</p>
+                <div class="flex gap-6">
+                    <button
+                        class="bg-[#d4e157] text-[#1a2e1a] px-10 py-4 rounded-[40px] font-press-start text-[1.2rem] border-none cursor-pointer transition-all duration-200 shadow-[0_10px_0_#939d33] hover:-translate-y-1 hover:shadow-[0_12px_0_#939d33] active:translate-y-2 active:shadow-[0_3px_0_#939d33]"
+                        @click="startRound()">ИГРАТЬ</button>
+                </div>
+            </div>
+
+            <!-- Settings Menu Overlay -->
+            <div class="absolute inset-0 bg-black/95 flex flex-col items-center justify-center z-200 text-center p-10"
+                x-show="showSettings" x-cloak>
+                <h2 class="text-3xl text-bright-lemon-300 font-press-start mb-10">НАСТРОЙКИ</h2>
+
+                <div class="flex flex-col gap-6 w-full max-w-md text-left">
+                    <div>
+                        <label class="block text-yellow-green-400 font-bold mb-2">Буквы (без пробелов):</label>
+                        <input type="text" x-model="sandbox.letters"
+                            class="w-full bg-black/50 border-2 border-yellow-green-500 rounded-xl p-3 text-white text-lg font-bold outline-none uppercase"
+                            placeholder="АБВГД...">
+                    </div>
+
+                    <div>
+                        <label class="block text-yellow-green-400 font-bold mb-2">Скорость падения (<span
+                                x-text="sandbox.speed"></span>x):</label>
+                        <input type="range" x-model.number="sandbox.speed" min="0.5" max="3" step="0.1"
+                            class="w-full accent-yellow-green-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-yellow-green-400 font-bold mb-2">Время раунда (сек):</label>
+                        <input type="number" x-model.number="sandbox.time" min="10" max="300"
+                            class="w-full bg-black/50 border-2 border-yellow-green-500 rounded-xl p-3 text-white text-lg outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-yellow-green-400 font-bold mb-2">Обезьянка:</label>
+                        <select x-model="sandbox.skin"
+                            class="w-full bg-black/50 border-2 border-yellow-green-500 rounded-xl p-3 text-white text-2xl outline-none">
+                            <option value="🐵">🐵 Обычная</option>
+                            <option value="🐒">🐒 Хвостатая</option>
+                            <option value="🦍">🦍 Горилла</option>
+                            <option value="🦧">🦧 Орангутан</option>
+                            <option value="👑">👑 Король</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-10 flex gap-6">
+                    <button
+                        class="bg-[#d4e157] text-[#1a2e1a] px-10 py-4 rounded-[40px] font-press-start text-[1rem] border-none cursor-pointer transition-all duration-200 shadow-[0_10px_0_#939d33] hover:-translate-y-1 hover:shadow-[0_12px_0_#939d33] active:translate-y-2 active:shadow-[0_3px_0_#939d33]"
+                        @click="showSettings = false; saveProgress(); if(isStartScreen) { startRound(); } else { isPaused = false; }">ПРОДОЛЖИТЬ</button>
+                </div>
+            </div>
+
+            <!-- Pause Screen -->
+            <div class="absolute inset-0 bg-black/85 flex flex-col items-center justify-center z-100 text-center p-10"
+                x-show="isPaused && !showSettings && !isStartScreen" x-cloak>
+                <h1 class="text-5xl text-bright-lemon-300 font-press-start mb-10">ПАУЗА</h1>
+                <div class="flex gap-6">
+                    <button
+                        class="bg-[#d4e157] text-[#1a2e1a] px-11 py-4 rounded-[40px] font-press-start text-[1.2rem] border-none cursor-pointer transition-all duration-200 shadow-[0_10px_0_#939d33] hover:-translate-y-1 hover:shadow-[0_12px_0_#939d33] active:translate-y-2 active:shadow-[0_3px_0_#939d33]"
+                        @click="togglePause()">ПРОДОЛЖИТЬ</button>
+                </div>
+            </div>
+
+            <!-- Game Over / Victory -->
+            <div class="absolute inset-0 bg-black/85 flex flex-col items-center justify-center z-200 text-center p-10"
+                x-show="gameOver" x-cloak>
+                <h1 class="text-4xl text-bright-lemon-300 font-press-start mb-6">ВРЕМЯ ВЫШЛО!</h1>
+                <p class="text-xl mb-4">Ты отлично справился!</p>
+                <div class="text-5xl text-yellow-green-400 font-press-start mb-10" x-text="score"></div>
+                <div class="flex gap-6">
+                    <button
+                        class="bg-[#d4e157] text-[#1a2e1a] px-11 py-4 rounded-[40px] font-press-start text-[1.2rem] border-none cursor-pointer transition-all duration-200 shadow-[0_10px_0_#939d33] hover:-translate-y-1 hover:shadow-[0_12px_0_#939d33] active:translate-y-2 active:shadow-[0_3px_0_#939d33]"
+                        @click="restartGame()">СНАЧАЛА</button>
+                </div>
+            </div>
+
+            <!-- Monkeys Field -->
+            <template x-for="monkey in monkeys" :key="monkey.id">
+                <div class="absolute text-[5rem] flex flex-col items-center justify-center drop-shadow-[0_8px_10px_rgba(0,0,0,0.4)] will-change-transform select-none"
+                    :class="{'monkey-exit': monkey.isCaught}" :style="`left: ${monkey.x}px; top: ${monkey.y}px;`"
+                    x-show="!monkey.removed">
+                    <span x-text="sandbox.skin"></span>
+                    <div class="absolute -top-4 bg-white text-[#1a2e1a] w-12 h-12 rounded-full flex items-center justify-center font-black text-[2rem] border-5 border-[#d4e157] shadow-[0_5px_15px_rgba(0,0,0,0.3)]"
+                        x-text="monkey.letter"></div>
+                </div>
+            </template>
+        </div>
+    </div>
+</body>
+
+</html>
