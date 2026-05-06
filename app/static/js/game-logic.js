@@ -1,5 +1,6 @@
 function gameHandler() {
     return {
+
         score: 0,
         timer: 0,
         isStartScreen: true,
@@ -10,7 +11,7 @@ function gameHandler() {
         monkeyId: 0,
         loopId: null,
         timerIntervalId: null,
-        
+
         sandbox: {
             letters: "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ",
             speed: 1.0,
@@ -21,7 +22,7 @@ function gameHandler() {
         init() {
             const savedScore = localStorage.getItem('typie_total_score');
             const savedSettings = localStorage.getItem('typie_sandbox_settings');
-            
+
             if (savedScore) this.score = parseInt(savedScore);
             if (savedSettings) this.sandbox = JSON.parse(savedSettings);
         },
@@ -74,7 +75,6 @@ function gameHandler() {
             const fw = field.clientWidth;
             const fh = field.clientHeight;
 
-            // Spawn rate is slightly affected by speed multiplier
             const spawnRate = 0.02 * this.sandbox.speed;
 
             if (Math.random() < spawnRate) {
@@ -97,19 +97,18 @@ function gameHandler() {
         spawnMonkey(fw, fh) {
             const side = Math.floor(Math.random() * 4);
             let x, y, vx, vy;
-            
-            // Base speed adjusted by sandbox multiplier
+
             const baseSpeed = 0.6 + Math.random() * 0.8;
             const finalSpeed = baseSpeed * this.sandbox.speed;
 
-            if (side === 0) { x = Math.random() * fw; y = -100; vx = (Math.random()-0.5) * 0.5; vy = finalSpeed; }
-            else if (side === 1) { x = fw + 100; y = Math.random() * fh; vx = -finalSpeed; vy = (Math.random()-0.5) * 0.5; }
-            else if (side === 2) { x = Math.random() * fw; y = fh + 100; vx = (Math.random()-0.5) * 0.5; vy = -finalSpeed; }
-            else { x = -100; y = Math.random() * fh; vx = finalSpeed; vy = (Math.random()-0.5) * 0.5; }
+            if (side === 0) { x = Math.random() * fw; y = -100; vx = (Math.random() - 0.5) * 0.5; vy = finalSpeed; }
+            else if (side === 1) { x = fw + 100; y = Math.random() * fh; vx = -finalSpeed; vy = (Math.random() - 0.5) * 0.5; }
+            else if (side === 2) { x = Math.random() * fw; y = fh + 100; vx = (Math.random() - 0.5) * 0.5; vy = -finalSpeed; }
+            else { x = -100; y = Math.random() * fh; vx = finalSpeed; vy = (Math.random() - 0.5) * 0.5; }
 
             const chars = this.sandbox.letters;
             if (!chars) return;
-            
+
             this.monkeys.push({
                 id: this.monkeyId++,
                 x, y, vx, vy,
@@ -125,10 +124,10 @@ function gameHandler() {
             }
 
             if (this.isStartScreen || this.showSettings || this.gameOver || this.isPaused) return;
-            
+
             const char = e.key.toUpperCase();
             const index = this.monkeys.findIndex(m => m.letter === char && !m.isCaught);
-            
+
             if (index !== -1) {
                 this.score += 10;
                 const m = this.monkeys[index];

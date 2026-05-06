@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=ABeeZee&family=Montserrat&family=Slackey&family=Press+Start+2P&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Slackey&family=Press+Start+2P&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_downward,arrow_upward,close,mobiledata_arrows,replay,settings");
 @import "tailwindcss";
 
@@ -67,4 +67,26 @@
     --color-sea-green-800: oklch(34.87% 0.066 143.99);
     --color-sea-green-900: oklch(23.13% 0.039 144.17);
     --color-sea-green-950: oklch(19.34% 0.029 144.34);
+}
+
+.simplebar-track.simplebar-vertical {
+    width: 15px;
+    margin-inline-end: 3px;
+    margin-block: 5px;
+}
+
+
+.monkey-exit {
+    animation: exit-anim 0.5s forwards ease-out;
+}
+
+@keyframes exit-anim {
+    to {
+        transform: scale(0) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+[x-cloak] {
+    display: none !important;
 }

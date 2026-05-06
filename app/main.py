@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for, request
 import secrets
 from app.db.db_connection import database
 from app.models.user_model import User
@@ -16,6 +16,7 @@ with app.app_context():
 
 
 @app.route("/", methods=["GET", "POST"])
+@app.route("/index", methods=["GET", "POST"])
 def index():
     return render_template("index.html")
 
@@ -27,7 +28,7 @@ def levels():
 
 @app.route("/sandbox")
 def sandbox():
-    return render_template("sandbox.html")
+    return render_template("game.html")
 
 
 @app.route("/leaderboard")
@@ -39,6 +40,6 @@ def leaderboard():
 def profile():
     return render_template("profile.html")
 
-
+    
 if __name__ == "__main__":
     app.run(port=8081, debug=True)

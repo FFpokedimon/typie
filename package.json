@@ -1,13 +1,13 @@
 {
   "dependencies": {
     "@tailwindcss/cli": "^4.2.2",
+    "simplebar": "^6.3.3",
     "tailwindcss": "^4.2.2"
   },
   "name": "typie",
   "version": "1.0.0",
   "description": "Клавиатурный тренажер для младшеклассников, только приучающихся к компьютеру",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx @tailwindcss/cli -i app/static/css/style.css -o app/static/css/output.css --watch --minify"
