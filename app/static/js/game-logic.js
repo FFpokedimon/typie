@@ -129,6 +129,8 @@ function gameHandler() {
             });
         },
 
+        pulseClass: '',
+
         handleInput(e) {
             if (e.key === ' ') {
                 this.togglePause();
@@ -140,12 +142,16 @@ function gameHandler() {
             const char = e.key.toUpperCase();
             const index = this.monkeys.findIndex(m => m.letter === char && !m.isCaught);
             if (index !== -1) {
-                this.roundScore += 10;
+                this.roundScore += 5 * this.sandbox.speed + 5;
+                this.pulseClass = 'bg-green-600/30 transition-colors duration-100';
+                setTimeout(() => { this.pulseClass = ''; }, 300);
                 const m = this.monkeys[index];
                 m.isCaught = true;
                 setTimeout(() => m.removed = true, 500);
-            } else {
-                this.roundScore = Math.max(0, this.roundScore - 5);
+            } else if (index === -1 && /^[А-ЯЁ]$/.test(char)) {
+                this.roundScore = Math.max(0, this.roundScore - 5 * this.sandbox.speed);
+                this.pulseClass = 'bg-red-600/30 transition-colors duration-100';
+                setTimeout(() => { this.pulseClass = ''; }, 300);
             }
         },
 

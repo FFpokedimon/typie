@@ -28,15 +28,15 @@
             <div class="absolute top-5 left-5 right-5 flex justify-between items-center z-50 font-press-start"
                 x-show="!isStartScreen && !gameOver && !isPaused && !showSettings">
                 <div
-                    class="bg-black/60 px-5 py-2.5 rounded-xl border border-[#d4e157]/30 text-sm">
+                    class="bg-black/60 px-5 py-2.5 rounded-xl border border-bright-lemon-300 text-sm">
                     ВРЕМЯ: <span x-text="timer" :class="timer < 10 ? 'text-red-500' : 'text-bright-lemon-300'"></span>
                 </div>
-                <div class="bg-black/60 px-5 py-2.5 rounded-xl border border-[#d4e157]/30 text-sm absolute left-1/2 transform -translate-x-1/2">
+                <div class="bg-black/60 px-5 py-2.5 rounded-xl border border-bright-lemon-300 text-sm absolute left-1/2 transform -translate-x-1/2" :class="pulseClass">
                     <span x-text="roundScore"></span>
                 </div>
                 <div class="flex gap-4">
                     <button
-                        class="bg-black/60 px-5 py-2.5 rounded-xl border border-[#d4e157]/30 text-sm cursor-pointer transition-transform duration-200 hover:scale-110"
+                        class="bg-black/60 px-5 py-2.5 rounded-xl border border-bright-lemon-300 text-sm cursor-pointer transition-transform duration-200 hover:scale-110"
                         @click="togglePause()">ПАУЗА (ПРОБЕЛ)</button>
 
                 </div>
@@ -46,18 +46,18 @@
                 <h1 class="text-5xl text-bright-lemon-300 font-press-start mb-10">ПАУЗА</h1>
                 <div class="flex gap-6">
                     <button
-                        class="bg-bright-lemon-300 text-medium-jungle-900 px-11 py-4 rounded-[40px] font-press-start text-[1.2rem] border-none cursor-pointer transition-all duration-200 shadow-[0_10px_0_#939d33] hover:-translate-y-1 hover:shadow-[0_12px_0_#939d33] active:translate-y-2 active:shadow-[0_3px_0_#939d33]"
+                        class="bg-bright-lemon-300 text-medium-jungle-900 px-11 py-4 rounded-[2.5rem] font-press-start text-lg border-none cursor-pointer transition-all duration-200 shadow-[0_10px_0_#939d33] hover:-translate-y-1 hover:shadow-[0_12px_0_#939d33] active:translate-y-2 active:shadow-[0_3px_0_#939d33]"
                         @click="togglePause()">ПРОДОЛЖИТЬ</button>
                 </div>
             </div>
             <div class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center z-200 text-center p-10"
                 x-show="gameOver" x-cloak>
                 <h1 class="text-4xl text-bright-lemon-300 font-press-start mb-6">ВРЕМЯ ВЫШЛО!</h1>
-                <p class="text-xl mb-4">Ты отлично справился!</p>
-                <div class="text-5xl text-yellow-green-400 font-press-start mb-10" x-text="roundScore"></div>
+                <p class="text-xl mb-4" x-text="roundScore !== 0 ? 'Ты отлично справился!' : 'Попробуй снова!'"></p>
+                <div class="text-5xl text-yellow-green-400 font-press-start mb-10 transition-colors duration-300" x-text="roundScore" :class="pulseClass"></div>
                 <div class="flex gap-6">
                     <button
-                        class="bg-bright-lemon-300 text-medium-jungle-900 px-11 py-4 rounded-[40px] font-press-start text-[1.2rem] border-none cursor-pointer transition-all duration-200 shadow-[0_10px_0_#939d33] hover:-translate-y-1 hover:shadow-[0_12px_0_#939d33] active:translate-y-2 active:shadow-[0_3px_0_#939d33]"
+                        class="bg-bright-lemon-300 text-medium-jungle-900 px-11 py-4 rounded-[2.5rem] font-press-start text-lg border-none cursor-pointer transition-all duration-200 shadow-[0_10px_0_#939d33] hover:-translate-y-1 hover:shadow-[0_12px_0_#939d33] active:translate-y-2 active:shadow-[0_3px_0_#939d33]"
                         @click="restartGame()">СНАЧАЛА</button>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                     можно больше обезьянок! </p>
                 <div class="flex gap-6">
                     <button
-                        class="bg-bright-lemon-300 text-medium-jungle-900 px-10 py-4 rounded-[40px] font-press-start text-[1.2rem] border-none cursor-pointer transition-all duration-200 shadow-[0_10px_0_#939d33] hover:-translate-y-1 hover:shadow-[0_12px_0_#939d33] active:translate-y-2 active:shadow-[0_3px_0_#939d33]"
+                        class="bg-bright-lemon-300 text-medium-jungle-900 px-10 py-4 rounded-[2.5rem] font-press-start text-lg border-none cursor-pointer transition-all duration-200 shadow-[0_10px_0_#939d33] hover:-translate-y-1 hover:shadow-[0_12px_0_#939d33] active:translate-y-2 active:shadow-[0_3px_0_#939d33]"
                         @click="startRound()">ИГРАТЬ</button>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                     <div>
                         <label class="block text-yellow-green-400 font-bold mb-2">Скорость падения (<span
                                 x-text="sandbox.speed"></span>x):</label>
-                        <input type="range" x-model.number="sandbox.speed" min="0.5" max="5" step="0.5"
+                        <input type="range" x-model.number="sandbox.speed" min="1" max="5" step="1"
                             class="w-full accent-yellow-green-500">
                     </div>
                     <div>
@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 <button
-                    class="bg-bright-lemon-300 text-medium-jungle-900 mt-10 px-10 py-4 rounded-[40px] font-press-start text-[1rem] border-none cursor-pointer transition-all duration-200 shadow-[0_10px_0_#939d33] hover:-translate-y-1 hover:shadow-[0_12px_0_#939d33] active:translate-y-2 active:shadow-[0_3px_0_#939d33]"
+                    class="bg-bright-lemon-300 text-medium-jungle-900 mt-10 px-10 py-4 rounded-[2.5rem] font-press-start text-base border-none cursor-pointer transition-all duration-200 shadow-[0_10px_0_#939d33] hover:-translate-y-1 hover:shadow-[0_12px_0_#939d33] active:translate-y-2 active:shadow-[0_3px_0_#939d33]"
                     @click="showSettings = false; saveProgress(); restartGame();">СОХРАНИТЬ И ПЕРЕЗАПУСТИТЬ</button>
             </div>
             <template x-for="monkey in monkeys" :key="monkey.id">
@@ -113,7 +113,7 @@
                     :class="{'monkey-exit': monkey.isCaught}" :style="`left: ${monkey.x}px; top: ${monkey.y}px;`"
                     x-show="!monkey.removed">
                     <span x-text="sandbox.skin"></span>
-                    <div class="absolute -top-4 bg-white text-medium-jungle-900 w-12 h-12 rounded-full flex items-center justify-center font-black text-[2rem] border-5 border-[#d4e157] shadow-[0_5px_15px_rgba(0,0,0,0.3)]"
+                    <div class="absolute -top-4 bg-white text-medium-jungle-900 w-12 h-12 rounded-full flex items-center justify-center font-black text-[2rem] border-5 border-yellow-green-300 shadow-[0_5px_15px_rgba(0,0,0,0.3)]"
                         x-text="monkey.letter"></div>
                 </div>
             </template>
